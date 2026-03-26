@@ -182,6 +182,12 @@
         display: none;
       }
 
+      html:has(body.is-pointer-fine),
+      body.is-pointer-fine,
+      body.is-pointer-fine * {
+        cursor: none;
+      }
+
       body.is-pointer-fine .cursor-dot,
       body.is-pointer-fine .cursor-ring {
         display: block;
