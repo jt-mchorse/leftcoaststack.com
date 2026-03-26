@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Syne:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/css/site.css" />
@@ -30,11 +30,8 @@
       <div class="site-header__inner">
         <a class="logo" href="index.html">
           <span class="logo__mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path
-                fill="currentColor"
-                d="M8 22V10h2.2v10.2H16V22H8zm7.1-6.3V10h8.9v2.1h-6.6v1.4h5.8v2h-5.8v2.2h6.8V22h-9.1v-6.3z"
-              />
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4 7h16M4 12h10M4 17h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
             </svg>
           </span>
           Left Coast Stack
@@ -60,7 +57,7 @@
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
-          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
@@ -78,41 +75,42 @@
         <div class="container">
           <div class="hero__grid">
             <div>
-              <p class="section__label">Spokane, Washington · Est. 2020</p>
-              <h1 class="hero__title">Software built with <span>clarity</span> and care.</h1>
+              <p class="section__label">Spokane, Washington — established 2020</p>
+              <h1 class="hero__title">Software engineering for organizations that ship.</h1>
               <p class="hero__sub">
-                Left Coast Stack LLC partners with product teams and enterprises to ship dashboards, platforms,
-                marketing sites, and AI-enabled features—on modern stacks, on schedule.
+                We design and build web platforms, internal tools, and AI-backed products for teams that need
+                reliability, security awareness, and interfaces that hold up under real operational load—not demo-day
+                polish.
               </p>
               <div class="hero__actions">
-                <a class="btn btn--primary" href="work.html">View selected work</a>
-                <a class="btn btn--ghost" href="contact.html">Start a conversation</a>
+                <a class="btn btn--primary" href="work.html">Selected work</a>
+                <a class="btn btn--ghost" href="contact.html">Inquire</a>
               </div>
             </div>
-            <aside class="hero__panel" aria-label="At a glance">
-              <div class="hero__panel-inner">
-                <div class="hero__stat-row">
-                  <div class="hero__stat">
-                    <div class="hero__stat-value">2020</div>
-                    <div class="hero__stat-label">Founded</div>
-                  </div>
-                  <div class="hero__stat">
-                    <div class="hero__stat-value">WA</div>
-                    <div class="hero__stat-label">Home base</div>
-                  </div>
-                  <div class="hero__stat">
-                    <div class="hero__stat-value">End‑to‑end</div>
-                    <div class="hero__stat-label">Delivery</div>
-                  </div>
+            <aside class="hero__aside" aria-label="Firm overview">
+              <p class="hero__aside-title">At a glance</p>
+              <dl class="hero__dl">
+                <div>
+                  <dt>Entity</dt>
+                  <dd>Left Coast Stack LLC</dd>
                 </div>
-                <p class="section__label" style="margin-bottom: 0.75rem">Capabilities</p>
-                <div class="hero__tags">
-                  <span class="tag">React &amp; Next.js</span>
-                  <span class="tag">TypeScript</span>
-                  <span class="tag">AI / ML</span>
-                  <span class="tag">Mobile</span>
-                  <span class="tag">Cloud &amp; DevOps</span>
+                <div>
+                  <dt>Founded</dt>
+                  <dd>2020</dd>
                 </div>
+                <div>
+                  <dt>Jurisdiction</dt>
+                  <dd>Washington, USA</dd>
+                </div>
+                <div>
+                  <dt>Engagements</dt>
+                  <dd>Project &amp; embedded</dd>
+                </div>
+              </dl>
+              <div class="hero__practice">
+                <strong>Practice areas</strong>
+                Product engineering, platform modernization, data-intensive interfaces, and regulated or security-sensitive
+                workflows.
               </div>
             </aside>
           </div>
@@ -123,20 +121,20 @@
         <div class="container">
           <dl class="stats-strip__grid">
             <div class="stats-strip__item">
-              <dt>Engagement model</dt>
-              <dd>Embedded &amp; project</dd>
+              <dt>Delivery</dt>
+              <dd>End-to-end ownership</dd>
             </div>
             <div class="stats-strip__item">
-              <dt>Focus</dt>
-              <dd>Product-quality UI</dd>
+              <dt>Discipline</dt>
+              <dd>Testing, docs, CI/CD</dd>
             </div>
             <div class="stats-strip__item">
-              <dt>Industries</dt>
-              <dd>Tech, logistics, gov-tech</dd>
+              <dt>Sectors</dt>
+              <dd>Technology, logistics, public sector</dd>
             </div>
             <div class="stats-strip__item">
               <dt>Stack</dt>
-              <dd>Modern &amp; proven</dd>
+              <dd>Modern, maintainable</dd>
             </div>
           </dl>
         </div>
@@ -144,80 +142,59 @@
 
       <section class="section" aria-labelledby="services-heading">
         <div class="container">
-          <p class="section__label">Services</p>
-          <h2 id="services-heading" class="section__title">What we deliver</h2>
+          <p class="section__label">Capabilities</p>
+          <h2 id="services-heading" class="section__title">How we work with your team</h2>
           <p class="section__lead">
-            From customer-facing experiences to internal operations tools, we bring disciplined engineering and
-            thoughtful design to every engagement.
+            Engagements are structured around clear outcomes: shipped software, documented handoff, and systems your
+            staff can operate without constant vendor dependency.
           </p>
-          <div class="services-grid" style="margin-top: var(--space-xl)">
+          <div class="services-grid">
             <article class="service-card">
-              <div class="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                  <rect x="3" y="4" width="18" height="14" rx="2" />
-                  <path d="M7 20h10M12 18v2" />
-                </svg>
-              </div>
-              <h3>Web &amp; product UI</h3>
-              <p>React, Next.js, TypeScript, and polished design systems—from marketing sites to dense dashboards.</p>
+              <span class="service-card__index" aria-hidden="true"></span>
+              <h3>Web &amp; product interfaces</h3>
+              <p>
+                React, Next.js, TypeScript, and mature design systems—from public marketing to authenticated operational
+                dashboards.
+              </p>
             </article>
             <article class="service-card">
-              <div class="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                  <path d="M12 3a7 7 0 00-7 7v1h2v-1a5 5 0 0110 0v4a2 2 0 01-2 2h-2v2h2a4 4 0 004-4v-4a9 9 0 00-9-9z" />
-                  <circle cx="8" cy="14" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="12" cy="14" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="16" cy="14" r="1.5" fill="currentColor" stroke="none" />
-                </svg>
-              </div>
-              <h3>AI &amp; automation</h3>
-              <p>Python, Django, and ML integrations—NLP, workflows, and production-ready AI features.</p>
+              <span class="service-card__index" aria-hidden="true"></span>
+              <h3>AI &amp; intelligent automation</h3>
+              <p>
+                Python services, Django, and integration with ML and LLM APIs—focused on measurable workflow impact,
+                not novelty for its own sake.
+              </p>
             </article>
             <article class="service-card">
-              <div class="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                  <rect x="7" y="2" width="10" height="20" rx="2" />
-                  <path d="M11 19h2" />
-                </svg>
-              </div>
+              <span class="service-card__index" aria-hidden="true"></span>
               <h3>Mobile</h3>
-              <p>React Native, Expo, and Flutter—aligned with your web product for a coherent experience.</p>
+              <p>React Native, Expo, and Flutter where field teams or customers require native distribution channels.</p>
             </article>
             <article class="service-card">
-              <div class="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                  <path d="M4 6h16v4H4zM4 14h10v4H4z" />
-                  <path d="M16 14h4v8h-4z" />
-                </svg>
-              </div>
+              <span class="service-card__index" aria-hidden="true"></span>
               <h3>Backend &amp; APIs</h3>
-              <p>Node, Express, Django, and Flask—secure, observable services behind the UI.</p>
+              <p>Node, Express, Django, and Flask—versioned APIs, observability, and sensible data boundaries.</p>
             </article>
             <article class="service-card">
-              <div class="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                  <ellipse cx="12" cy="6" rx="8" ry="3" />
-                  <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
-                </svg>
-              </div>
-              <h3>Data &amp; cloud</h3>
-              <p>PostgreSQL, MySQL, MongoDB, Supabase, and AWS / Azure / GCP deployments.</p>
+              <span class="service-card__index" aria-hidden="true"></span>
+              <h3>Data &amp; infrastructure</h3>
+              <p>PostgreSQL, MySQL, MongoDB, Supabase, and cloud deployments on AWS, Azure, or GCP.</p>
             </article>
             <article class="service-card">
-              <div class="service-card__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                  <path d="M4 14l4-4 4 4 8-8" />
-                  <path d="M4 20h16" />
-                </svg>
-              </div>
-              <h3>DevOps &amp; quality</h3>
-              <p>Docker, Kubernetes, CI/CD, testing, and documentation—so releases stay calm.</p>
+              <span class="service-card__index" aria-hidden="true"></span>
+              <h3>Quality &amp; operations</h3>
+              <p>Automated testing, CI/CD, containers, and operational documentation appropriate to your risk profile.</p>
             </article>
           </div>
           <div class="cta-band">
-            <h2>Ready to scope your next release?</h2>
-            <p>Tell us about timelines, stack, and success metrics—we’ll respond with honest fit and next steps.</p>
-            <a class="btn btn--primary" href="contact.html">Get in touch</a>
+            <div class="cta-band__text">
+              <h2>Discuss scope and fit</h2>
+              <p>
+                Share objectives, constraints, and timeline. We respond with a concise view of approach, effort class, and
+                whether we are the right firm for the work.
+              </p>
+            </div>
+            <a class="btn btn--primary" href="contact.html">Contact</a>
           </div>
         </div>
       </section>
@@ -229,16 +206,19 @@
           <div>
             <p class="footer__brand">Left Coast Stack LLC</p>
             <p class="footer__tagline">
-              Professional software development—web, mobile, and AI—based in Spokane, Washington.
+              Custom software development — Spokane, Washington.
             </p>
           </div>
           <div>
-            <p class="footer__meta"><strong>Email</strong><br /><a href="mailto:hello@leftcoaststack.com">hello@leftcoaststack.com</a></p>
+            <p class="footer__meta">
+              <strong>Email</strong>
+              <a href="mailto:hello@leftcoaststack.com">hello@leftcoaststack.com</a>
+            </p>
           </div>
         </div>
         <div class="footer__bottom">
-          <span>© <span id="y"></span> Left Coast Stack LLC. All rights reserved.</span>
-          <span>Built with semantic HTML, HTMX, and hand-crafted CSS.</span>
+          <span>© <span id="y"></span> Left Coast Stack LLC</span>
+          <span>Static site · HTMX · no framework runtime</span>
         </div>
       </div>
     </footer>
