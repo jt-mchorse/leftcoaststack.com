@@ -1,3 +1,42 @@
+<!--
+  DESIGN RESEARCH NOTES (FWA / Awwwards / Linear / Vercel / Stripe / dev-tool marketing sites)
+
+  LAYOUT DECISIONS (borrowed & why):
+  1) Centered editorial column with occasional full-bleed bands — matches Vercel/Stripe clarity:
+     one primary reading measure, then rhythm breaks for portfolio “proof” so the page feels
+     like a serious document, not a scattered landing template.
+  2) Stacked horizontal project rows with alternating surface tones — common on high-end agency
+     portfolios (Awwwards / Obys-style rhythm): scan-friendly, emphasizes each engagement as a
+     discrete shipped artifact.
+  3) Hero as full-viewport “stage” with faint grid + radial glow — echoes Linear’s calm dark UI
+     and Vercel’s grid-as-aesthetic: depth without illustration bloat.
+
+  TYPOGRAPHY STRATEGY:
+  - Display / headings: Outfit (600–800) — geometric, confident, not overused like Space Grotesk.
+  - Body: DM Sans (400–500) — humanist, highly legible on long about copy.
+  - Tech / tags: IBM Plex Mono (400–500) — monospace credibility for stack tags and marquee.
+  - Scale: clamp() from fluid hero (≈56–96px effective) down to compact labels; generous line-height
+    on body (1.6–1.7), tighter on display (0.95–1.05).
+
+  COLOR PALETTE RATIONALE:
+  - Base #0c0d10 (near-black, slight warm neutrality): Pacific Northwest “night sky,” less sterile
+    than pure black; reduces halation on OLED.
+  - Surfaces #12141a / #161922: layered depth for cards and alternating work rows.
+  - Text: high-contrast off-white hierarchy (#f4f4f5 primary, #a1a1aa muted).
+  - Accent #3b82f6 (electric blue): signal for links, CTAs, and focus — reads as technical trust
+    (infrastructure, precision) without purple SaaS cliché; used sparingly.
+
+  MOTION / ANIMATION PHILOSOPHY:
+  - Scroll: IntersectionObserver reveals — opacity + translateY, 0.6s ease-out, threshold 0.15;
+    stagger lists with --delay. Motion earns attention; it never competes with copy (Linear’s
+    “calm interface” principle).
+  - Hover: fast (0.2–0.25s) micro-feedback on cards and work rows — tactile, not flashy.
+  - Ambient: very slow (20s) gradient drift + low-opacity grid drift — alive but subconscious.
+
+  SIGNATURE ELEMENT:
+  - Custom cursor (dot + lagging ring) on pointer desktop + subtle film grain overlay — the kind of
+    craft detail that reads “we care about pixels” before a visitor reads a single paragraph.
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,228 +44,1582 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Left Coast Stack LLC — custom software development in Spokane, WA. Web, mobile, AI, and cloud engineering since 2020."
+      content="Left Coast Stack LLC — custom web, mobile, and AI-driven software for product teams and enterprises. Spokane, WA since 2020."
     />
-    <title>Left Coast Stack LLC — Software development</title>
+    <title>Left Coast Stack LLC — Software engineering that ships</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Left Coast Stack LLC — Software engineering that ships" />
+    <meta
+      property="og:description"
+      content="Custom software engineering for product teams and enterprises — dashboards, platforms, marketing sites, and AI-enabled features. Spokane, WA."
+    />
+    <meta property="og:url" content="https://leftcoaststack.com/" />
+    <meta property="og:image" content="https://leftcoaststack.com/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Left Coast Stack LLC" />
+    <meta
+      name="twitter:description"
+      content="Custom web, mobile, and AI-driven solutions — Spokane, WA since 2020."
+    />
+    <meta name="twitter:image" content="https://leftcoaststack.com/og-image.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/site.css" />
-    <script src="assets/js/theme.js"></script>
+
+    <style>
+      :root {
+        --color-bg: #0c0d10;
+        --color-surface: #12141a;
+        --color-surface-elevated: #161922;
+        --color-surface-row-a: rgba(255, 255, 255, 0.02);
+        --color-surface-row-b: rgba(255, 255, 255, 0.04);
+        --color-text: #f4f4f5;
+        --color-text-muted: #a1a1aa;
+        --color-text-faint: #71717a;
+        --color-accent: #3b82f6;
+        --color-accent-soft: rgba(59, 130, 246, 0.12);
+        --color-border: rgba(255, 255, 255, 0.06);
+        --color-border-strong: rgba(255, 255, 255, 0.1);
+        --color-nav-scrolled-bg: rgba(12, 13, 16, 0.8);
+        --font-display: "Outfit", system-ui, sans-serif;
+        --font-body: "DM Sans", system-ui, sans-serif;
+        --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+        --space-xs: 0.25rem;
+        --space-sm: 0.5rem;
+        --space-md: 1rem;
+        --space-lg: 1.5rem;
+        --space-xl: 2rem;
+        --space-2xl: 3rem;
+        --space-3xl: 4.5rem;
+        --space-4xl: 6rem;
+        --space-section: clamp(4rem, 12vw, 7rem);
+        --radius-sm: 0.375rem;
+        --radius-md: 0.75rem;
+        --radius-pill: 9999px;
+        --content-max: 72rem;
+        --content-narrow: 40rem;
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --transition-fast: 0.25s var(--ease-out);
+        --transition-reveal: 0.6s var(--ease-out);
+        --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 40px rgba(0, 0, 0, 0.35);
+        --shadow-card-hover: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 20px 50px rgba(0, 0, 0, 0.45);
+        --z-cursor: 9999;
+        --z-nav: 100;
+        --z-grain: 50;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-body);
+        font-size: 1.0625rem;
+        line-height: 1.65;
+        color: var(--color-text);
+        background-color: var(--color-bg);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0.5rem;
+        z-index: calc(var(--z-nav) + 1);
+        padding: var(--space-sm) var(--space-md);
+        background: var(--color-accent);
+        color: #fff;
+        font-weight: 600;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+      }
+
+      .skip-link:focus {
+        left: 0.5rem;
+      }
+
+      /* Film grain */
+      .grain {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: var(--z-grain);
+        opacity: 0.04;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+
+      /* Custom cursor */
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+
+      body.is-pointer-fine .cursor-dot,
+      body.is-pointer-fine .cursor-ring {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: var(--z-cursor);
+        border-radius: 50%;
+        transform: translate3d(-100px, -100px, 0);
+        will-change: transform;
+      }
+
+      body.is-pointer-fine .cursor-dot {
+        width: 8px;
+        height: 8px;
+        margin: -4px 0 0 -4px;
+        background: var(--color-accent);
+        transform-origin: center center;
+        transition: background 0.2s ease, opacity 0.2s ease;
+      }
+
+      body.is-pointer-fine .cursor-ring {
+        width: 32px;
+        height: 32px;
+        margin: -16px 0 0 -16px;
+        border: 1px solid rgba(244, 244, 245, 0.35);
+        transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+      }
+
+      body.is-pointer-fine.cursor-hover .cursor-dot {
+        background: #fff;
+      }
+
+      body.is-pointer-fine.cursor-hover .cursor-ring {
+        border-color: var(--color-accent);
+        background: rgba(59, 130, 246, 0.08);
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 3px;
+      }
+
+      .container {
+        width: min(100% - var(--space-xl) * 2, var(--content-max));
+        margin-inline: auto;
+      }
+
+      .container--narrow {
+        width: min(100% - var(--space-xl) * 2, var(--content-narrow));
+      }
+
+      /* Nav */
+      .site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: var(--z-nav);
+        transition: background var(--transition-fast), border-color var(--transition-fast),
+          backdrop-filter var(--transition-fast);
+      }
+
+      .site-nav__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-md);
+        padding: var(--space-md) var(--space-xl);
+        max-width: calc(var(--content-max) + 4rem);
+        margin-inline: auto;
+      }
+
+      .site-nav.scrolled {
+        background: var(--color-nav-scrolled-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .logo {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.125rem;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .logo__accent {
+        color: var(--color-accent);
+        font-weight: 800;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--space-lg);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-links a {
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: var(--color-text-muted);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+      }
+
+      .nav-links a:hover {
+        color: var(--color-text);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-sm);
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.9375rem;
+        padding: 0.65rem 1.35rem;
+        border-radius: var(--radius-pill);
+        text-decoration: none;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: transform var(--transition-fast), border-color var(--transition-fast),
+          background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+      }
+
+      .btn--primary {
+        background: var(--color-accent);
+        color: #fff;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      }
+
+      .btn--primary:hover {
+        filter: brightness(1.06);
+        transform: translateY(-1px);
+      }
+
+      .btn--ghost {
+        background: transparent;
+        color: var(--color-text);
+        border-color: var(--color-border-strong);
+      }
+
+      .btn--ghost:hover {
+        border-color: var(--color-accent);
+        color: var(--color-text);
+      }
+
+      .btn--large {
+        padding: 0.85rem 1.75rem;
+        font-size: 1rem;
+      }
+
+      /* Reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity var(--transition-reveal), transform var(--transition-reveal);
+        transition-delay: var(--delay, 0s);
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hero-line {
+        opacity: 0;
+        transform: translateY(16px);
+        animation: heroLineIn 0.7s var(--ease-out) forwards;
+        animation-delay: var(--hero-delay, 0s);
+      }
+
+      @keyframes heroLineIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Hero */
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: calc(5rem + var(--space-xl)) var(--space-xl) var(--space-3xl);
+        overflow: hidden;
+      }
+
+      .hero__bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: radial-gradient(ellipse 80% 60% at 70% 10%, rgba(59, 130, 246, 0.09), transparent 55%),
+          radial-gradient(ellipse 60% 50% at 20% 80%, rgba(59, 130, 246, 0.05), transparent 50%),
+          var(--color-bg);
+        animation: meshDrift 20s ease-in-out infinite alternate;
+      }
+
+      @keyframes meshDrift {
+        0% {
+          filter: hue-rotate(0deg);
+          transform: scale(1) translate3d(0, 0, 0);
+        }
+        100% {
+          filter: hue-rotate(12deg);
+          transform: scale(1.03) translate3d(-1%, 1%, 0);
+        }
+      }
+
+      .hero__grid-lines {
+        position: absolute;
+        inset: -20%;
+        z-index: 0;
+        opacity: 0.06;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+        background-size: 64px 64px;
+        animation: gridDrift 80s linear infinite;
+      }
+
+      @keyframes gridDrift {
+        to {
+          transform: translate3d(-64px, -64px, 0);
+        }
+      }
+
+      .hero__content {
+        position: relative;
+        z-index: 1;
+        max-width: 52rem;
+      }
+
+      .hero__title {
+        font-family: var(--font-display);
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 0.98;
+        font-size: clamp(3.25rem, 8vw, 5.75rem);
+        margin: 0 0 var(--space-lg);
+        color: var(--color-text);
+      }
+
+      .hero__title .line {
+        display: block;
+      }
+
+      .hero__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-text-faint);
+        border: 1px solid var(--color-border);
+        padding: 0.35rem 0.75rem;
+        border-radius: var(--radius-pill);
+        margin-bottom: var(--space-lg);
+      }
+
+      .hero__sub {
+        font-size: clamp(1.05rem, 2vw, 1.2rem);
+        color: var(--color-text-muted);
+        max-width: 36rem;
+        margin: 0 0 var(--space-xl);
+      }
+
+      .hero__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+        margin-bottom: var(--space-2xl);
+      }
+
+      .scroll-hint {
+        position: absolute;
+        bottom: var(--space-xl);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-sm);
+        color: var(--color-text-faint);
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .scroll-hint__chev {
+        width: 20px;
+        height: 20px;
+        border-right: 1px solid currentColor;
+        border-bottom: 1px solid currentColor;
+        transform: rotate(45deg);
+        animation: chevBounce 2s ease-in-out infinite;
+      }
+
+      @keyframes chevBounce {
+        0%,
+        100% {
+          transform: rotate(45deg) translateY(0);
+          opacity: 0.4;
+        }
+        50% {
+          transform: rotate(45deg) translateY(6px);
+          opacity: 1;
+        }
+      }
+
+      /* Sections */
+      .section-label {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--color-text-faint);
+        margin: 0 0 var(--space-md);
+      }
+
+      .section-title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin: 0 0 var(--space-xl);
+        color: var(--color-text);
+      }
+
+      .section {
+        padding-block: var(--space-section);
+        scroll-margin-top: 5rem;
+      }
+
+      /* Services */
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+        gap: var(--space-lg);
+      }
+
+      .service-card {
+        position: relative;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: var(--space-xl);
+        box-shadow: var(--shadow-card);
+        transition: transform var(--transition-fast), border-color var(--transition-fast),
+          box-shadow var(--transition-fast);
+      }
+
+      .service-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(59, 130, 246, 0.35);
+        box-shadow: var(--shadow-card-hover);
+      }
+
+      .service-card__icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: var(--space-md);
+        color: var(--color-accent);
+      }
+
+      .service-card h3 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.125rem;
+        margin: 0 0 var(--space-sm);
+        letter-spacing: -0.02em;
+      }
+
+      .service-card p {
+        margin: 0 0 var(--space-md);
+        color: var(--color-text-muted);
+        font-size: 0.9375rem;
+        line-height: 1.55;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+      }
+
+      .tag {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--color-border);
+        color: var(--color-text-faint);
+      }
+
+      /* Work */
+      .work-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .work-row {
+        position: relative;
+        padding: var(--space-2xl) var(--space-xl);
+        border-bottom: 1px solid var(--color-border);
+        transition: background var(--transition-fast);
+      }
+
+      .work-row::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--color-accent);
+        transform: scaleY(0);
+        transform-origin: center top;
+        opacity: 0;
+        transition: transform 0.35s var(--ease-out), opacity 0.35s var(--ease-out);
+      }
+
+      .work-row:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .work-row:hover::before {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+
+      .work-row:nth-child(odd) {
+        background: var(--color-surface-row-a);
+      }
+
+      .work-row:nth-child(even) {
+        background: var(--color-surface-row-b);
+      }
+
+      .work-row:hover:nth-child(odd),
+      .work-row:hover:nth-child(even) {
+        background: rgba(59, 130, 246, 0.06);
+      }
+
+      .work-row__inner {
+        max-width: var(--content-max);
+        margin-inline: auto;
+      }
+
+      .work-row__top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-md);
+        margin-bottom: var(--space-md);
+      }
+
+      .work-row__client {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        letter-spacing: -0.03em;
+        margin: 0;
+      }
+
+      .work-row__meta {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--color-text-faint);
+      }
+
+      .work-row__link {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--color-accent);
+        text-decoration: none;
+        margin-bottom: var(--space-md);
+        word-break: break-all;
+      }
+
+      .work-row__link:hover {
+        text-decoration: underline;
+      }
+
+      .work-row ul {
+        margin: 0 0 var(--space-md);
+        padding-left: 1.15rem;
+        color: var(--color-text-muted);
+        font-size: 0.9375rem;
+      }
+
+      .work-row li {
+        margin-bottom: var(--space-sm);
+      }
+
+      /* About split */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+        align-items: start;
+      }
+
+      @media (min-width: 960px) {
+        .about-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-3xl);
+        }
+      }
+
+      .pull-quote {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
+        margin: 0;
+        padding-left: var(--space-md);
+        border-left: 3px solid var(--color-accent);
+      }
+
+      .about-copy p {
+        color: var(--color-text-muted);
+        margin: 0 0 var(--space-md);
+        font-size: 1rem;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-lg);
+        margin-top: var(--space-2xl);
+        padding-top: var(--space-2xl);
+        border-top: 1px solid var(--color-border);
+      }
+
+      @media (min-width: 768px) {
+        .stats {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      .stat {
+        text-align: left;
+      }
+
+      .stat__value {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: var(--color-text);
+        letter-spacing: -0.02em;
+      }
+
+      .stat__label {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--color-text-faint);
+        margin-top: var(--space-xs);
+      }
+
+      /* Marquee */
+      .marquee-wrap {
+        overflow: hidden;
+        mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      }
+
+      .marquee {
+        display: flex;
+        width: max-content;
+        gap: var(--space-md);
+        animation: marqueeLeft 55s linear infinite;
+      }
+
+      .marquee--reverse {
+        animation-name: marqueeRight;
+        margin-top: var(--space-md);
+      }
+
+      .marquee-wrap:hover .marquee {
+        animation-play-state: paused;
+      }
+
+      @keyframes marqueeLeft {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      @keyframes marqueeRight {
+        from {
+          transform: translateX(-50%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      .marquee__inner {
+        display: flex;
+        gap: var(--space-md);
+      }
+
+      .marquee .tag {
+        white-space: nowrap;
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+      }
+
+      /* Contact */
+      .contact-band {
+        padding: var(--space-4xl) var(--space-xl);
+        background: linear-gradient(180deg, var(--color-accent-soft), transparent),
+          radial-gradient(ellipse 70% 80% at 50% 0%, rgba(59, 130, 246, 0.08), transparent 60%);
+        border-top: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-border);
+        text-align: center;
+      }
+
+      .contact-band h2 {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: -0.03em;
+        margin: 0 0 var(--space-md);
+      }
+
+      .contact-band p {
+        color: var(--color-text-muted);
+        max-width: 36rem;
+        margin: 0 auto var(--space-xl);
+      }
+
+      .contact-email {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(1.25rem, 3vw, 1.75rem);
+        color: var(--color-accent);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: var(--space-lg);
+      }
+
+      .contact-email:hover {
+        text-decoration: underline;
+      }
+
+      .contact-loc {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--color-text-faint);
+        margin-top: var(--space-xl);
+      }
+
+      /* Footer */
+      .site-footer {
+        padding: var(--space-2xl) var(--space-xl);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .footer__grid {
+        display: grid;
+        gap: var(--space-xl);
+        max-width: var(--content-max);
+        margin-inline: auto;
+      }
+
+      @media (min-width: 768px) {
+        .footer__grid {
+          grid-template-columns: 1fr auto;
+          align-items: start;
+        }
+      }
+
+      .footer__brand {
+        font-family: var(--font-display);
+        font-weight: 700;
+        margin: 0 0 var(--space-sm);
+      }
+
+      .footer__copy {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--color-text-faint);
+      }
+
+      .footer__nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-md) var(--space-lg);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer__nav a {
+        color: var(--color-text-muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .footer__nav a:hover {
+        color: var(--color-text);
+      }
+
+      .footer__tag {
+        grid-column: 1 / -1;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--color-text-faint);
+        padding-top: var(--space-lg);
+        border-top: 1px solid var(--color-border);
+        margin-top: var(--space-md);
+      }
+
+      @media (max-width: 640px) {
+        .site-nav__inner {
+          flex-direction: column;
+          align-items: stretch;
+          padding: var(--space-md);
+        }
+
+        .nav-links {
+          justify-content: center;
+          gap: var(--space-md);
+        }
+
+        .nav-links li:last-child {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+
+        .scroll-hint {
+          display: none;
+        }
+      }
+    </style>
   </head>
-  <body
-    hx-boost="true"
-    hx-target="main"
-    hx-select="main"
-    hx-swap="outerHTML"
-    hx-push-url="true"
-  >
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="site-header__inner">
-        <a class="logo" href="index.html">
-          <span class="logo__mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M4 7h16M4 12h10M4 17h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
-            </svg>
-          </span>
-          Left Coast Stack
+
+    <header class="site-nav" id="site-nav" role="banner">
+      <div class="site-nav__inner">
+        <a class="logo" href="#top" aria-label="Left Coast Stack home">
+          Left Coast <span class="logo__accent">Stack</span>
         </a>
-        <div class="header-actions">
-          <nav id="site-nav" class="nav" aria-label="Primary">
-            <a href="index.html" aria-current="page">Home</a>
-            <a href="about.html">About</a>
-            <a href="work.html">Work</a>
-            <a href="contact.html">Contact</a>
-          </nav>
-          <button
-            type="button"
-            class="nav-toggle"
-            aria-expanded="false"
-            aria-controls="site-nav"
-            aria-label="Open menu"
-          >
-            <svg class="nav-toggle__bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-            <svg class="nav-toggle__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
-          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-            </svg>
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-            </svg>
-          </button>
-        </div>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a class="btn btn--primary" href="mailto:hello@leftcoaststack.com">Start a Project</a></li>
+          </ul>
+        </nav>
       </div>
     </header>
 
     <main id="main">
-      <section class="hero">
+      <section class="hero" id="top" aria-label="Introduction">
+        <div class="hero__bg" aria-hidden="true"></div>
+        <div class="hero__grid-lines" aria-hidden="true"></div>
+        <div class="container hero__content">
+          <p class="hero__badge hero-line" style="--hero-delay: 0.05s">Est. 2020 · Spokane, WA</p>
+          <h1 class="hero__title">
+            <span class="line hero-line" style="--hero-delay: 0.15s">Software that</span>
+            <span class="line hero-line" style="--hero-delay: 0.28s">scales with you.</span>
+          </h1>
+          <p class="hero__sub hero-line" style="--hero-delay: 0.42s">
+            Left Coast Stack delivers custom web, mobile, and AI-driven solutions for product teams and
+            enterprises—dashboards, platforms, marketing sites, and production-ready systems built on modern stacks.
+          </p>
+          <div class="hero__actions hero-line" style="--hero-delay: 0.55s">
+            <a class="btn btn--primary btn--large" href="#work">See Our Work</a>
+            <a class="btn btn--ghost btn--large" href="#contact">Get in Touch</a>
+          </div>
+        </div>
+        <div class="scroll-hint" aria-hidden="true">
+          <span>Scroll</span>
+          <span class="scroll-hint__chev"></span>
+        </div>
+      </section>
+
+      <section class="section" id="services" aria-labelledby="services-heading">
         <div class="container">
-          <div class="hero__grid">
-            <div>
-              <p class="section__label">Spokane, Washington — established 2020</p>
-              <h1 class="hero__title">Software engineering for organizations that ship.</h1>
-              <p class="hero__sub">
-                We design and build web platforms, internal tools, and AI-backed products for teams that need
-                reliability, security awareness, and interfaces that hold up under real operational load—not demo-day
-                polish.
-              </p>
-              <div class="hero__actions">
-                <a class="btn btn--primary" href="work.html">Selected work</a>
-                <a class="btn btn--ghost" href="contact.html">Inquire</a>
+          <p class="section-label reveal">What we build</p>
+          <h2 id="services-heading" class="section-title reveal" style="--delay: 0.05s">
+            Full-stack delivery, end to end.
+          </h2>
+          <div class="services-grid">
+            <article class="service-card reveal" style="--delay: 0s">
+              <div class="service-card__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="14" rx="2" />
+                  <path d="M7 20h10" />
+                </svg>
               </div>
-            </div>
-            <aside class="hero__aside" aria-label="Firm overview">
-              <p class="hero__aside-title">At a glance</p>
-              <dl class="hero__dl">
-                <div>
-                  <dt>Entity</dt>
-                  <dd>Left Coast Stack LLC</dd>
-                </div>
-                <div>
-                  <dt>Founded</dt>
-                  <dd>2020</dd>
-                </div>
-                <div>
-                  <dt>Jurisdiction</dt>
-                  <dd>Washington, USA</dd>
-                </div>
-                <div>
-                  <dt>Engagements</dt>
-                  <dd>Project &amp; embedded</dd>
-                </div>
-              </dl>
-              <div class="hero__practice">
-                <strong>Practice areas</strong>
-                Product engineering, platform modernization, data-intensive interfaces, and regulated or security-sensitive
-                workflows.
+              <h3>Web development</h3>
+              <p>Product interfaces, marketing sites, and data-heavy dashboards on modern front-end stacks.</p>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">Next.js</span>
+                <span class="tag">TypeScript</span>
               </div>
-            </aside>
+            </article>
+            <article class="service-card reveal" style="--delay: 0.1s">
+              <div class="service-card__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 3v3M5 9l2.5 2.5M19 9l-2.5 2.5M5 15l2.5-2.5M19 15l-2.5-2.5M12 21v-3" />
+                  <circle cx="12" cy="12" r="4" />
+                </svg>
+              </div>
+              <h3>AI &amp; machine learning</h3>
+              <p>Python services, NLP, and OpenAI-powered workflows integrated into real products.</p>
+              <div class="tag-row">
+                <span class="tag">Python</span>
+                <span class="tag">TensorFlow</span>
+                <span class="tag">PyTorch</span>
+              </div>
+            </article>
+            <article class="service-card reveal" style="--delay: 0.2s">
+              <div class="service-card__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="6" y="3" width="12" height="18" rx="2" />
+                  <path d="M10 18h4" />
+                </svg>
+              </div>
+              <h3>Mobile apps</h3>
+              <p>Cross-platform apps for teams and customers who need reliable native distribution.</p>
+              <div class="tag-row">
+                <span class="tag">React Native</span>
+                <span class="tag">Flutter</span>
+                <span class="tag">Expo</span>
+              </div>
+            </article>
+            <article class="service-card reveal" style="--delay: 0.3s">
+              <div class="service-card__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M4 8h16v10H4zM8 8V6a4 4 0 018 0v2" />
+                  <path d="M9 12h6" />
+                </svg>
+              </div>
+              <h3>Backend &amp; APIs</h3>
+              <p>Versioned APIs, sensible boundaries, and services your team can operate long-term.</p>
+              <div class="tag-row">
+                <span class="tag">Node.js</span>
+                <span class="tag">Django</span>
+                <span class="tag">Flask</span>
+              </div>
+            </article>
+            <article class="service-card reveal" style="--delay: 0.4s">
+              <div class="service-card__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M4 14l4-4 4 4 8-8" />
+                  <path d="M4 20h16" />
+                </svg>
+              </div>
+              <h3>Cloud &amp; DevOps</h3>
+              <p>Containers, orchestration, and CI/CD so releases stay boring—in a good way.</p>
+              <div class="tag-row">
+                <span class="tag">AWS</span>
+                <span class="tag">Azure</span>
+                <span class="tag">Docker</span>
+                <span class="tag">Kubernetes</span>
+              </div>
+            </article>
+            <article class="service-card reveal" style="--delay: 0.5s">
+              <div class="service-card__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <ellipse cx="12" cy="6" rx="8" ry="3" />
+                  <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6" />
+                  <path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
+                </svg>
+              </div>
+              <h3>Data &amp; databases</h3>
+              <p>PostgreSQL, MongoDB, Supabase, and the data modeling that keeps apps fast and honest.</p>
+              <div class="tag-row">
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">MongoDB</span>
+                <span class="tag">Supabase</span>
+              </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <div class="stats-strip">
-        <div class="container">
-          <dl class="stats-strip__grid">
-            <div class="stats-strip__item">
-              <dt>Delivery</dt>
-              <dd>End-to-end ownership</dd>
-            </div>
-            <div class="stats-strip__item">
-              <dt>Discipline</dt>
-              <dd>Testing, docs, CI/CD</dd>
-            </div>
-            <div class="stats-strip__item">
-              <dt>Sectors</dt>
-              <dd>Technology, logistics, public sector</dd>
-            </div>
-            <div class="stats-strip__item">
-              <dt>Stack</dt>
-              <dd>Modern, maintainable</dd>
-            </div>
-          </dl>
+      <section class="section" id="work" aria-labelledby="work-heading">
+        <div class="container" style="margin-bottom: var(--space-xl)">
+          <p class="section-label reveal">Selected work</p>
+          <h2 id="work-heading" class="section-title reveal" style="--delay: 0.05s">Projects we're proud of.</h2>
         </div>
-      </div>
+        <div class="work-list">
+          <article class="work-row reveal" style="--delay: 0s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Athlete to Athlete</h3>
+                <span class="work-row__meta">Feb 2025 – Jun 2025</span>
+              </div>
+              <a
+                class="work-row__link"
+                href="https://athletetoathlete.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                >athletetoathlete.com</a
+              >
+              <ul>
+                <li>Revamped company landing pages and user onboarding using React, Next.js, and Material UI</li>
+                <li>Configured social sign-in and improved the authentication flow</li>
+                <li>Tuned responsive layout and cross-browser compatibility</li>
+                <li>Worked with UX/UI for precise visual implementation</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">Next.js</span>
+                <span class="tag">Material UI</span>
+              </div>
+            </div>
+          </article>
 
-      <section class="section" aria-labelledby="services-heading">
+          <article class="work-row reveal" style="--delay: 0.05s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Veteran Crowd</h3>
+                <span class="work-row__meta">Oct 2024 – Jan 2025</span>
+              </div>
+              <a
+                class="work-row__link"
+                href="https://www.veterancrowd.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >veterancrowd.com</a
+              >
+              <ul>
+                <li>Built a government-oriented veteran platform with React, Next.js, TypeScript, and Semantic UI</li>
+                <li>Strengthened onboarding security (military verification, MFA)</li>
+                <li>Implemented complex state management with Redux and improved application performance</li>
+                <li>Aligned work with security and accessibility expectations</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">Next.js</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Redux</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.1s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Wire Pulse</h3>
+                <span class="work-row__meta">Jun 2024 – Aug 2024</span>
+              </div>
+              <a class="work-row__link" href="https://www.wirepulse.io" target="_blank" rel="noopener noreferrer"
+                >wirepulse.io</a
+              >
+              <ul>
+                <li>Delivered a v2 admin dashboard for a cable management system (React, TypeScript, Next.js)</li>
+                <li>Built data-heavy tables for location, usage, and scheduling</li>
+                <li>Migrated legacy data to a new schema with no downtime</li>
+                <li>Added real-time tracking and automated reporting</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Next.js</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.15s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">SheltonAI</h3>
+                <span class="work-row__meta">Mar 2024 – Jun 2024</span>
+              </div>
+              <a class="work-row__link" href="https://www.sheltonai.com/" target="_blank" rel="noopener noreferrer"
+                >sheltonai.com</a
+              >
+              <ul>
+                <li>Shipped AI-driven features in Python and Django (NLP and automation)</li>
+                <li>Built responsive UI and dashboards with Vue.js</li>
+                <li>Integrated AI services into existing apps and data pipelines</li>
+                <li>Partnered with product and research to take models into production</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">Python</span>
+                <span class="tag">Django</span>
+                <span class="tag">Vue.js</span>
+                <span class="tag">NLP</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.2s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Tryon Creek Software <span style="font-weight: 500; color: var(--color-text-faint); font-size: 0.85em">/ American Logistics</span></h3>
+                <span class="work-row__meta">Dec 2023 – Oct 2024</span>
+              </div>
+              <a
+                class="work-row__link"
+                href="https://americanlogistics.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                >americanlogistics.com</a
+              >
+              <ul>
+                <li>Delivered three internal dashboards: multi-step forms, live driver tracking, subscriptions, and third-party APIs</li>
+                <li>Designed a nine-step nested form validation flow</li>
+                <li>Refreshed dashboard UX to modern standards</li>
+                <li>Mentored junior developers on React and code review</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">Dashboards</span>
+                <span class="tag">APIs</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.25s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Lilt</h3>
+                <span class="work-row__meta">Sep 2023 – Nov 2023</span>
+              </div>
+              <a class="work-row__link" href="https://lilt.com" target="_blank" rel="noopener noreferrer">lilt.com</a>
+              <ul>
+                <li>Rebuilt the marketing site with React, Next.js, TypeScript, and Tailwind CSS</li>
+                <li>Migrated CMS from Strapi to Contentful</li>
+                <li>Cut page load time roughly 40% via code splitting and image optimization</li>
+                <li>Applied SEO improvements</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">Next.js</span>
+                <span class="tag">Tailwind CSS</span>
+                <span class="tag">Contentful</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.3s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">iService <span style="font-weight: 500; color: var(--color-text-faint); font-size: 0.85em">/ DealerBuilt</span></h3>
+                <span class="work-row__meta">May 2022 – Sep 2023</span>
+              </div>
+              <a class="work-row__link" href="https://dealerbuilt.com/" target="_blank" rel="noopener noreferrer"
+                >dealerbuilt.com</a
+              >
+              <ul>
+                <li>Contributed on a 20+ person agile team across Company, Customer, and Technician portals</li>
+                <li>Built React Native apps with strong state management and real-time coordination with web portals</li>
+                <li>Rolled out a Material UI design system for consistency; led reviews and raised testing standards</li>
+                <li>WebSocket-heavy real-time messaging, repair progress broadcasts, and live dashboards across web and native clients</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">React Native</span>
+                <span class="tag">Material UI</span>
+                <span class="tag">WebSockets</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.35s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">JMFA <span style="font-weight: 500; color: var(--color-text-faint); font-size: 0.85em">/ Advantage-fi</span></h3>
+                <span class="work-row__meta">Mar 2022 – Jul 2022</span>
+              </div>
+              <a class="work-row__link" href="https://advantage-fi.com/" target="_blank" rel="noopener noreferrer"
+                >advantage-fi.com</a
+              >
+              <ul>
+                <li>Built the Advantage marketing site (React, TypeScript, Bootstrap) against a C#/.NET backend</li>
+                <li>Embedded Power BI for analytics and insights</li>
+                <li>Added geolocation for targeting and market analysis</li>
+                <li>Ensured strong responsive behavior on mobile and desktop</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Bootstrap</span>
+                <span class="tag">Power BI</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.4s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Surefront</h3>
+                <span class="work-row__meta">Dec 2021 – Feb 2022</span>
+              </div>
+              <a class="work-row__link" href="https://www.surefront.com/" target="_blank" rel="noopener noreferrer"
+                >surefront.com</a
+              >
+              <ul>
+                <li>Extended a B2B e-commerce stack (React, Node.js, MongoDB, AWS)</li>
+                <li>Improved dashboard UX and store management features</li>
+                <li>Implemented shipping controls with live tracking</li>
+                <li>Optimized queries for roughly 30% database performance gain</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">MongoDB</span>
+                <span class="tag">AWS</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.45s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Embrace</h3>
+                <span class="work-row__meta">Feb 2021 – Jun 2021</span>
+              </div>
+              <a class="work-row__link" href="https://embrace.io/" target="_blank" rel="noopener noreferrer"
+                >embrace.io</a
+              >
+              <ul>
+                <li>Created a custom React and TypeScript component library</li>
+                <li>Produced responsive email templates with SendGrid</li>
+                <li>Automated a daily digest to support engagement</li>
+                <li>Documented the design system and component guidelines</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">SendGrid</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="work-row reveal" style="--delay: 0.5s">
+            <div class="work-row__inner">
+              <div class="work-row__top">
+                <h3 class="work-row__client">Riviera Partners</h3>
+                <span class="work-row__meta">Jan 2021 – Dec 2021</span>
+              </div>
+              <a
+                class="work-row__link"
+                href="https://www.rivierapartners.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >rivierapartners.com</a
+              >
+              <ul>
+                <li>Migrated a legacy front end to React without production downtime</li>
+                <li>Improved structure and runtime performance</li>
+                <li>Introduced testing and CI practices</li>
+                <li>Cut load time about 50% through targeted optimization</li>
+              </ul>
+              <div class="tag-row">
+                <span class="tag">React</span>
+                <span class="tag">Performance</span>
+                <span class="tag">CI</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="about" aria-labelledby="about-heading">
         <div class="container">
-          <p class="section__label">Capabilities</p>
-          <h2 id="services-heading" class="section__title">How we work with your team</h2>
-          <p class="section__lead">
-            Engagements are structured around clear outcomes: shipped software, documented handoff, and systems your
-            staff can operate without constant vendor dependency.
-          </p>
-          <div class="services-grid">
-            <article class="service-card">
-              <span class="service-card__index" aria-hidden="true"></span>
-              <h3>Web &amp; product interfaces</h3>
-              <p>
-                React, Next.js, TypeScript, and mature design systems—from public marketing to authenticated operational
-                dashboards.
+          <p class="section-label reveal">About</p>
+          <h2 id="about-heading" class="section-title reveal" style="--delay: 0.05s">Credibility, earned in production.</h2>
+          <div class="about-grid">
+            <blockquote class="pull-quote reveal" style="--delay: 0s">
+              We've been building production-grade software since 2020 — quietly shipping things that matter.
+            </blockquote>
+            <div class="about-copy">
+              <p class="reveal" style="--delay: 0.1s">
+                <strong style="color: var(--color-text)">Left Coast Stack LLC</strong> is a software development
+                company in <strong style="color: var(--color-text)">Spokane, Washington</strong>, founded in
+                <strong style="color: var(--color-text)">2020</strong>. We partner with organizations that need custom
+                engineering—dashboards, platforms, marketing sites, and AI-enabled features—delivered with an emphasis on
+                modern front-end stacks, full-stack delivery, and reliable production systems.
               </p>
-            </article>
-            <article class="service-card">
-              <span class="service-card__index" aria-hidden="true"></span>
-              <h3>AI &amp; intelligent automation</h3>
-              <p>
-                Python services, Django, and integration with ML and LLM APIs—focused on measurable workflow impact,
-                not novelty for its own sake.
+              <p class="reveal" style="--delay: 0.2s">
+                We work in the ecosystems teams already use: React, Next.js, TypeScript, Python, Django, React Native,
+                cloud providers, and mature DevOps practice. Engagements are built around close collaboration, clear
+                handoff, and software that holds up to real traffic, security expectations, and ongoing operations—not
+                demo-day polish.
               </p>
-            </article>
-            <article class="service-card">
-              <span class="service-card__index" aria-hidden="true"></span>
-              <h3>Mobile</h3>
-              <p>React Native, Expo, and Flutter where field teams or customers require native distribution channels.</p>
-            </article>
-            <article class="service-card">
-              <span class="service-card__index" aria-hidden="true"></span>
-              <h3>Backend &amp; APIs</h3>
-              <p>Node, Express, Django, and Flask—versioned APIs, observability, and sensible data boundaries.</p>
-            </article>
-            <article class="service-card">
-              <span class="service-card__index" aria-hidden="true"></span>
-              <h3>Data &amp; infrastructure</h3>
-              <p>PostgreSQL, MySQL, MongoDB, Supabase, and cloud deployments on AWS, Azure, or GCP.</p>
-            </article>
-            <article class="service-card">
-              <span class="service-card__index" aria-hidden="true"></span>
-              <h3>Quality &amp; operations</h3>
-              <p>Automated testing, CI/CD, containers, and operational documentation appropriate to your risk profile.</p>
-            </article>
-          </div>
-          <div class="cta-band">
-            <div class="cta-band__text">
-              <h2>Discuss scope and fit</h2>
-              <p>
-                Share objectives, constraints, and timeline. We respond with a concise view of approach, effort class, and
-                whether we are the right firm for the work.
+              <p class="reveal" style="--delay: 0.3s">
+                Our clients are product teams, enterprises, and startups with serious engineering needs: internal tools,
+                customer-facing products, migrations, performance work, and real-time systems. If you need a partner
+                who can ship and document the result, we're easy to talk to.
               </p>
             </div>
-            <a class="btn btn--primary" href="contact.html">Contact</a>
           </div>
+          <div class="stats">
+            <div class="stat reveal" style="--delay: 0s">
+              <div class="stat__value">11+</div>
+              <div class="stat__label">Projects</div>
+            </div>
+            <div class="stat reveal" style="--delay: 0.1s">
+              <div class="stat__value">5+</div>
+              <div class="stat__label">Years</div>
+            </div>
+            <div class="stat reveal" style="--delay: 0.2s">
+              <div class="stat__value">Full-stack</div>
+              <div class="stat__label">Delivery</div>
+            </div>
+            <div class="stat reveal" style="--delay: 0.3s">
+              <div class="stat__value">Spokane</div>
+              <div class="stat__label">WA</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="technologies" aria-labelledby="tech-heading">
+        <div class="container">
+          <p class="section-label reveal">Technologies</p>
+          <h2 id="tech-heading" class="section-title reveal" style="--delay: 0.05s">The stack behind the work.</h2>
+        </div>
+        <div class="marquee-wrap reveal" style="--delay: 0.1s">
+          <div class="marquee" aria-hidden="true">
+            <div class="marquee__inner">
+              <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span
+              ><span class="tag">Tailwind CSS</span><span class="tag">Material UI</span><span class="tag">Semantic UI</span
+              ><span class="tag">Bootstrap</span><span class="tag">Vue.js</span><span class="tag">Python</span
+              ><span class="tag">Django</span><span class="tag">Flask</span><span class="tag">TensorFlow</span
+              ><span class="tag">PyTorch</span><span class="tag">OpenAI APIs</span><span class="tag">NLP</span
+              ><span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">Flutter</span
+              ><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">Redux</span>
+            </div>
+            <div class="marquee__inner" aria-hidden="true">
+              <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span
+              ><span class="tag">Tailwind CSS</span><span class="tag">Material UI</span><span class="tag">Semantic UI</span
+              ><span class="tag">Bootstrap</span><span class="tag">Vue.js</span><span class="tag">Python</span
+              ><span class="tag">Django</span><span class="tag">Flask</span><span class="tag">TensorFlow</span
+              ><span class="tag">PyTorch</span><span class="tag">OpenAI APIs</span><span class="tag">NLP</span
+              ><span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">Flutter</span
+              ><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">Redux</span>
+            </div>
+          </div>
+          <div class="marquee marquee--reverse" aria-hidden="true">
+            <div class="marquee__inner">
+              <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">MongoDB</span
+              ><span class="tag">Supabase</span><span class="tag">AWS</span><span class="tag">Azure</span
+              ><span class="tag">GCP</span><span class="tag">Docker</span><span class="tag">Kubernetes</span
+              ><span class="tag">Jenkins</span><span class="tag">GitHub Actions</span><span class="tag">GitLab CI</span
+              ><span class="tag">WebSockets</span><span class="tag">Strapi</span><span class="tag">Contentful</span
+              ><span class="tag">Power BI</span><span class="tag">SendGrid</span><span class="tag">jQuery</span
+              ><span class="tag">Jira</span><span class="tag">Markdown</span><span class="tag">AsciiDoc</span
+              ><span class="tag">Confluence</span>
+            </div>
+            <div class="marquee__inner">
+              <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">MongoDB</span
+              ><span class="tag">Supabase</span><span class="tag">AWS</span><span class="tag">Azure</span
+              ><span class="tag">GCP</span><span class="tag">Docker</span><span class="tag">Kubernetes</span
+              ><span class="tag">Jenkins</span><span class="tag">GitHub Actions</span><span class="tag">GitLab CI</span
+              ><span class="tag">WebSockets</span><span class="tag">Strapi</span><span class="tag">Contentful</span
+              ><span class="tag">Power BI</span><span class="tag">SendGrid</span><span class="tag">jQuery</span
+              ><span class="tag">Jira</span><span class="tag">Markdown</span><span class="tag">AsciiDoc</span
+              ><span class="tag">Confluence</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-band" id="contact" aria-labelledby="contact-heading">
+        <div class="container container--narrow">
+          <h2 id="contact-heading" class="reveal">Let's build something together.</h2>
+          <p class="reveal" style="--delay: 0.08s">
+            Left Coast Stack works with product teams and enterprises that need reliable, modern software delivered
+            without drama.
+          </p>
+          <a class="contact-email reveal" style="--delay: 0.15s" href="mailto:hello@leftcoaststack.com"
+            >hello@leftcoaststack.com</a
+          >
+          <div class="reveal" style="--delay: 0.22s">
+            <a class="btn btn--primary btn--large" href="mailto:hello@leftcoaststack.com">Start a Project</a>
+          </div>
+          <p class="contact-loc reveal" style="--delay: 0.28s">Based in Spokane, WA · Available for remote engagements</p>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="container">
-        <div class="footer__grid">
-          <div>
-            <p class="footer__brand">Left Coast Stack LLC</p>
-            <p class="footer__tagline">
-              Custom software development — Spokane, Washington.
-            </p>
-          </div>
-          <div>
-            <p class="footer__meta">
-              <strong>Email</strong>
-              <a href="mailto:hello@leftcoaststack.com">hello@leftcoaststack.com</a>
-            </p>
-          </div>
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Left Coast Stack</p>
+          <p class="footer__copy">© <span id="footer-year"></span> Left Coast Stack LLC. All rights reserved.</p>
         </div>
-        <div class="footer__bottom">
-          <span>© <span id="y"></span> Left Coast Stack LLC</span>
-          <span>Static site · HTMX · no framework runtime</span>
-        </div>
+        <ul class="footer__nav" aria-label="Footer">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <p class="footer__tag">Built with precision in Spokane, WA</p>
       </div>
     </footer>
 
     <script>
-      document.getElementById("y").textContent = new Date().getFullYear();
+      (function () {
+        "use strict";
+
+        var mqFine = window.matchMedia("(pointer: fine)");
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        function setupNavScroll() {
+          var nav = document.getElementById("site-nav");
+          if (!nav) return;
+          function onScroll() {
+            nav.classList.toggle("scrolled", window.scrollY > 60);
+          }
+          onScroll();
+          window.addEventListener("scroll", onScroll, { passive: true });
+        }
+
+        function setupReveal() {
+          if (reduceMotion.matches) {
+            document.querySelectorAll(".reveal").forEach(function (el) {
+              el.classList.add("is-visible");
+            });
+            return;
+          }
+          var els = document.querySelectorAll(".reveal");
+          if (!els.length) return;
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("is-visible");
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+          );
+          els.forEach(function (el) {
+            io.observe(el);
+          });
+        }
+
+        function setupCursor() {
+          if (!mqFine.matches) return;
+          document.body.classList.add("is-pointer-fine");
+          var dot = document.querySelector(".cursor-dot");
+          var ring = document.querySelector(".cursor-ring");
+          if (!dot || !ring) return;
+
+          var mouseX = window.innerWidth / 2;
+          var mouseY = window.innerHeight / 2;
+          var ringX = mouseX;
+          var ringY = mouseY;
+          var rafId = null;
+
+          function lerp(a, b, t) {
+            return a + (b - a) * t;
+          }
+
+          function onMove(e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          }
+
+          function onEnterInteractive() {
+            document.body.classList.add("cursor-hover");
+          }
+
+          function onLeaveInteractive() {
+            document.body.classList.remove("cursor-hover");
+          }
+
+          document.addEventListener("mousemove", onMove, { passive: true });
+          document.querySelectorAll('a, button, [role="button"], input, textarea, select').forEach(function (el) {
+            el.addEventListener("mouseenter", onEnterInteractive);
+            el.addEventListener("mouseleave", onLeaveInteractive);
+          });
+
+          function tick() {
+            ringX = lerp(ringX, mouseX, 0.18);
+            ringY = lerp(ringY, mouseY, 0.18);
+            var scale = document.body.classList.contains("cursor-hover") ? 1.65 : 1;
+            dot.style.transform =
+              "translate3d(" + mouseX + "px, " + mouseY + "px, 0) scale(" + scale + ")";
+            ring.style.transform = "translate3d(" + ringX + "px, " + ringY + "px, 0)";
+            rafId = requestAnimationFrame(tick);
+          }
+          rafId = requestAnimationFrame(tick);
+        }
+
+        var y = document.getElementById("footer-year");
+        if (y) y.textContent = String(new Date().getFullYear());
+
+        setupNavScroll();
+        setupReveal();
+        setupCursor();
+      })();
     </script>
-    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-    <script src="assets/js/nav.js"></script>
   </body>
 </html>
