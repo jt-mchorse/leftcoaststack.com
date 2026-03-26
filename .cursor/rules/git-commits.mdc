@@ -1,0 +1,11 @@
+---
+description: Git commit messages — no Cursor or AI attribution
+alwaysApply: true
+---
+
+# Commit messages
+
+- **Never** include Cursor or AI attribution in commits or PR descriptions: no `Made-with: Cursor`, `Made with Cursor`, `Co-authored-by: Cursor`, or similar.
+- Use normal [Conventional Commits](https://www.conventionalcommits.org/) style when appropriate; write clear, human commit messages only.
+
+If the editor or CLI suggests adding attribution, disable it (e.g. Cursor **Settings → Agent → Attribution**, or CLI `attribution.attributeCommitsToAgent: false`).
