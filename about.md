@@ -18,7 +18,7 @@
 ## Services
 
 - **Web development** — React, Next.js, TypeScript, Tailwind CSS, Material UI, Semantic UI, Bootstrap, jQuery, and related ecosystems
-- **AI & ML** — Python, Django, Flask, TensorFlow, PyTorch, OpenAI APIs, NLP and automation workflows
+- **AI & ML** — Python, Django, Flask, TensorFlow, PyTorch, OpenAI APIs, NLP, RAG, generative AI, vector databases, and automation workflows
 - **Mobile** — React Native, Expo, Flutter
 - **Backend** — Node.js, Express, Django, Flask
 - **Data** — PostgreSQL, MySQL, MongoDB, Supabase
@@ -82,7 +82,7 @@ Engagements below reflect representative projects: product UI, internal tools, m
 - Collaborated with product, research, and platform teams to transition model prototypes into production-grade services with measurable quality and uptime expectations.
 - Supported compliance and reliability objectives by implementing secure handling patterns, audit-friendly processing steps, and service-level monitoring practices.
 
-**Technologies used:** Python, Django, NLP pipelines, Vue.js, analytics dashboards, API/service integration, production ML enablement
+**Technologies used:** Python, Django, NLP pipelines, RAG, generative AI, vector databases, Vue.js, analytics dashboards, API/service integration, production ML enablement
 
 ### Tryon Creek Software
 
@@ -108,7 +108,7 @@ Engagements below reflect representative projects: product UI, internal tools, m
 - Implemented technical SEO enhancements including metadata consistency, structured content patterns, crawlability improvements, and performance-conscious markup.
 - Improved operational resilience through tighter error boundaries, safer content fallbacks, and stronger observability around CMS-fed pages.
 
-**Technologies used:** React, Next.js, TypeScript, Tailwind CSS, Contentful, Strapi migration, SEO optimization, web performance engineering
+**Technologies used:** React, Next.js, TypeScript, Tailwind CSS, Contentful, Strapi migration, RAG, generative AI, vector databases, SEO optimization, web performance engineering
 
 ### iService
 
