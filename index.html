@@ -42,6 +42,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#0c0d10" />
+    <link rel="canonical" href="https://leftcoaststack.com/" />
     <meta
       name="description"
       content="Left Coast Stack LLC — custom web, mobile, and AI-driven software for product teams and enterprises. Spokane, WA since 2020."
@@ -50,6 +53,8 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Left Coast Stack LLC" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Left Coast Stack LLC — Software engineering that ships" />
     <meta
       property="og:description"
@@ -71,6 +76,84 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://leftcoaststack.com/#website",
+            "url": "https://leftcoaststack.com/",
+            "name": "Left Coast Stack LLC",
+            "description": "Custom web, mobile, and AI-driven software for product teams and enterprises. Spokane, WA since 2020.",
+            "inLanguage": "en-US",
+            "publisher": { "@id": "https://leftcoaststack.com/#organization" }
+          },
+          {
+            "@type": ["Organization", "ProfessionalService"],
+            "@id": "https://leftcoaststack.com/#organization",
+            "name": "Left Coast Stack LLC",
+            "legalName": "Left Coast Stack LLC",
+            "url": "https://leftcoaststack.com/",
+            "logo": "https://leftcoaststack.com/favicon.svg",
+            "image": "https://leftcoaststack.com/og-image.png",
+            "description": "Custom software engineering for product teams and enterprises—dashboards, platforms, marketing sites, and AI-enabled features.",
+            "foundingDate": "2020",
+            "email": "hello@leftcoaststack.com",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Spokane",
+              "addressRegion": "WA",
+              "addressCountry": "US"
+            },
+            "areaServed": [
+              { "@type": "City", "name": "Spokane" },
+              { "@type": "AdministrativeArea", "name": "Washington" },
+              { "@type": "Country", "name": "United States" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://leftcoaststack.com/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is Left Coast Stack?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Left Coast Stack LLC is a software development company based in Spokane, Washington, founded in 2020. We build custom web, mobile, and AI-driven solutions for product teams and enterprises."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Where is Left Coast Stack located?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We are based in Spokane, WA, and work with clients remotely across the United States."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What technologies does Left Coast Stack work with?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We work across React, Next.js, TypeScript, Python, Django, Flask, Node.js, cloud platforms including AWS, Azure, and GCP, mobile stacks like React Native and Flutter, and modern data and DevOps tooling—aligned with what your team already uses."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How can I start a project with Left Coast Stack?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Email hello@leftcoaststack.com with a short description of your goals, timeline, and technical context. We will follow up to discuss fit and next steps."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
 
     <style>
       :root {
@@ -830,6 +913,116 @@
       }
 
       /* Contact */
+      /* At a glance (AEO / entity summary) */
+      .glance {
+        padding-bottom: 0;
+      }
+
+      .glance__card {
+        max-width: var(--content-narrow);
+        margin-inline: auto;
+        padding: var(--space-xl);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-card);
+      }
+
+      .glance__title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.125rem;
+        letter-spacing: -0.02em;
+        margin: 0 0 var(--space-md);
+        color: var(--color-text);
+      }
+
+      .glance__summary {
+        margin: 0;
+        color: var(--color-text-muted);
+        font-size: 1.0625rem;
+        line-height: 1.65;
+      }
+
+      .glance__summary strong {
+        color: var(--color-text);
+        font-weight: 600;
+      }
+
+      .glance__figure {
+        margin: var(--space-lg) 0 0;
+        padding: 0;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        border: 1px solid var(--color-border);
+      }
+
+      .glance__figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      /* FAQ */
+      .faq-list {
+        max-width: 40rem;
+        margin: var(--space-xl) auto 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+      }
+
+      .faq-item {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+      }
+
+      .faq-item summary {
+        cursor: pointer;
+        list-style: none;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 1.0625rem;
+        padding: var(--space-md) var(--space-lg);
+        color: var(--color-text);
+        position: relative;
+        padding-right: 2.5rem;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary::after {
+        content: "";
+        position: absolute;
+        right: var(--space-lg);
+        top: 50%;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-right: 2px solid var(--color-text-muted);
+        border-bottom: 2px solid var(--color-text-muted);
+        transform: translateY(-65%) rotate(45deg);
+        transition: transform var(--transition-fast);
+      }
+
+      .faq-item[open] summary::after {
+        transform: translateY(-25%) rotate(-135deg);
+      }
+
+      .faq-item__body {
+        padding: 0 var(--space-lg) var(--space-lg);
+        margin: 0;
+        color: var(--color-text-muted);
+        font-size: 1rem;
+        line-height: 1.65;
+        border-top: 1px solid var(--color-border);
+        padding-top: var(--space-md);
+      }
+
       .contact-band {
         padding: var(--space-4xl) var(--space-xl);
         background: linear-gradient(180deg, var(--color-accent-soft), transparent),
@@ -978,6 +1171,7 @@
             <li><a href="#services">Services</a></li>
             <li><a href="#work">Work</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a class="btn btn--primary" href="mailto:hello@leftcoaststack.com">Start a Project</a></li>
           </ul>
@@ -985,7 +1179,7 @@
       </div>
     </header>
 
-    <!-- Primary content is this single page. work.html, about.html, and contact.html only redirect here (#work, #about, #contact). -->
+    <!-- Primary content is this single page. work.html, about.html, and contact.html redirect here (#work, #about, #contact). -->
     <main id="main">
       <section class="hero" id="top" aria-label="Introduction">
         <div class="hero__bg" aria-hidden="true"></div>
@@ -1008,6 +1202,32 @@
         <div class="scroll-hint" aria-hidden="true">
           <span>Scroll</span>
           <span class="scroll-hint__chev"></span>
+        </div>
+      </section>
+
+      <section class="section glance" id="overview" aria-labelledby="glance-heading">
+        <div class="container">
+          <p class="section-label reveal">Overview</p>
+          <h2 id="glance-heading" class="section-title reveal" style="--delay: 0.05s">At a glance.</h2>
+          <div class="glance__card reveal" style="--delay: 0.1s">
+            <h3 class="glance__title">Left Coast Stack LLC</h3>
+            <p class="glance__summary">
+              <strong>Legal name:</strong> Left Coast Stack LLC · <strong>Founded:</strong> 2020 ·
+              <strong>Location:</strong> Spokane, Washington, United States · <strong>Focus:</strong> Custom software
+              engineering for product teams and enterprises—web, mobile, AI-enabled features, dashboards, platforms, and
+              marketing sites—delivered with modern stacks and production discipline.
+            </p>
+            <figure class="glance__figure">
+              <img
+                src="og-image.png"
+                alt="Left Coast Stack LLC — custom software engineering, Spokane WA"
+                width="1200"
+                height="630"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </div>
         </div>
       </section>
 
@@ -1608,6 +1828,45 @@
         </div>
       </section>
 
+      <section class="section" id="faq" aria-labelledby="faq-heading">
+        <div class="container">
+          <p class="section-label reveal">FAQ</p>
+          <h2 id="faq-heading" class="section-title reveal" style="--delay: 0.05s">Common questions.</h2>
+          <div class="faq-list">
+            <details class="faq-item reveal" style="--delay: 0s">
+              <summary>What is Left Coast Stack?</summary>
+              <p class="faq-item__body">
+                Left Coast Stack LLC is a software development company based in Spokane, Washington, founded in 2020. We
+                build custom web, mobile, and AI-driven solutions for product teams and enterprises.
+              </p>
+            </details>
+            <details class="faq-item reveal" style="--delay: 0.05s">
+              <summary>Where is Left Coast Stack located?</summary>
+              <p class="faq-item__body">
+                We are based in Spokane, WA, and work with clients remotely across the United States.
+              </p>
+            </details>
+            <details class="faq-item reveal" style="--delay: 0.1s">
+              <summary>What technologies does Left Coast Stack work with?</summary>
+              <p class="faq-item__body">
+                We work across React, Next.js, TypeScript, Python, Django, Flask, Node.js, cloud platforms including AWS,
+                Azure, and GCP, mobile stacks like React Native and Flutter, and modern data and DevOps tooling—aligned
+                with what your team already uses.
+              </p>
+            </details>
+            <details class="faq-item reveal" style="--delay: 0.15s">
+              <summary>How can I start a project with Left Coast Stack?</summary>
+              <p class="faq-item__body">
+                Email
+                <a href="mailto:hello@leftcoaststack.com">hello@leftcoaststack.com</a>
+                with a short description of your goals, timeline, and technical context. We will follow up to discuss fit
+                and next steps.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
       <section class="contact-band" id="contact" aria-labelledby="contact-heading">
         <div class="container container--narrow">
           <h2 id="contact-heading" class="reveal">Let's build something together.</h2>
@@ -1636,6 +1895,7 @@
           <li><a href="#services">Services</a></li>
           <li><a href="#work">Work</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <p class="footer__tag">Built with precision in Spokane, WA</p>
