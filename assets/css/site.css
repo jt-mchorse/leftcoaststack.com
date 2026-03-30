@@ -1060,15 +1060,3 @@ main {
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
-
-.htmx-indicator {
-  display: none;
-}
-
-.htmx-request .htmx-indicator {
-  display: inline;
-}
-
-.htmx-request.htmx-indicator {
-  display: inline;
-}

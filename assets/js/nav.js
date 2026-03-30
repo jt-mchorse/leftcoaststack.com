@@ -53,20 +53,4 @@
       }
     });
   });
-
-  document.body.addEventListener("htmx:afterSettle", syncNavCurrentPage);
-
-  document.body.addEventListener("htmx:afterSwap", function (evt) {
-    try {
-      var xhr = evt.detail && evt.detail.xhr;
-      if (!xhr || !xhr.responseText) return;
-      var doc = new DOMParser().parseFromString(xhr.responseText, "text/html");
-      var t = doc.querySelector("title");
-      if (t && t.textContent) {
-        document.title = t.textContent.trim();
-      }
-    } catch (e) {
-      /* ignore */
-    }
-  });
 })();
