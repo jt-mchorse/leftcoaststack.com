@@ -937,14 +937,21 @@
         color: var(--color-text);
       }
 
-      .glance__summary {
+      .glance__facts {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+      }
+
+      .glance__line {
         margin: 0;
         color: var(--color-text-muted);
         font-size: 1.0625rem;
         line-height: 1.65;
       }
 
-      .glance__summary strong {
+      .glance__line strong {
         color: var(--color-text);
         font-weight: 600;
       }
@@ -1211,12 +1218,18 @@
           <h2 id="glance-heading" class="section-title reveal" style="--delay: 0.05s">At a glance.</h2>
           <div class="glance__card reveal" style="--delay: 0.1s">
             <h3 class="glance__title">Left Coast Stack LLC</h3>
-            <p class="glance__summary">
-              <strong>Legal name:</strong> Left Coast Stack LLC · <strong>Founded:</strong> 2020 ·
-              <strong>Location:</strong> Spokane, Washington, United States · <strong>Focus:</strong> Custom software
-              engineering for product teams and enterprises—web, mobile, AI-enabled features, dashboards, platforms, and
-              marketing sites—delivered with modern stacks and production discipline.
-            </p>
+            <div class="glance__facts">
+              <p class="glance__line"><strong>Legal name:</strong> Left Coast Stack LLC</p>
+              <p class="glance__line"><strong>Founded:</strong> 2020</p>
+              <p class="glance__line">
+                <strong>Location:</strong> Spokane, Washington, United States
+              </p>
+              <p class="glance__line">
+                <strong>Focus:</strong> Custom software engineering for product teams and enterprises—web, mobile,
+                AI-enabled features, dashboards, platforms, and marketing sites—delivered with modern stacks and production
+                discipline.
+              </p>
+            </div>
             <figure class="glance__figure">
               <img
                 src="og-image.png"
