@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#0c0d10" />
+    <link rel="canonical" href="https://leftcoaststack.com/blog/llm-judge-rescore-test.html" />
+    <meta name="description" content="I re-scored 20 documents my LLM judge had already scored, with the same rubric, and 7 of them landed on the other side of the cutoff." />
+    <title>I re-scored 20 documents. 7 crossed the cutoff. · Left Coast Stack</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Left Coast Stack LLC" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="I re-scored 20 documents. 7 crossed the cutoff." />
+    <meta property="og:description" content="I re-scored 20 documents my LLM judge had already scored, with the same rubric, and 7 of them landed on the other side of the cutoff." />
+    <meta property="og:url" content="https://leftcoaststack.com/blog/llm-judge-rescore-test.html" />
+    <meta property="og:image" content="https://leftcoaststack.com/og-image.png" />
+    <meta property="article:published_time" content="2026-11-04" />
+    <meta property="article:author" content="James (JT) McHorse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="I re-scored 20 documents. 7 crossed the cutoff." />
+    <meta name="twitter:description" content="I re-scored 20 documents my LLM judge had already scored, with the same rubric, and 7 of them landed on the other side of the cutoff." />
+    <meta name="twitter:image" content="https://leftcoaststack.com/og-image.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+
+    <style>
+      :root {
+        --color-bg: #0c0d10;
+        --color-surface: #12141a;
+        --color-surface-elevated: #161922;
+        --color-surface-row-a: rgba(255, 255, 255, 0.02);
+        --color-surface-row-b: rgba(255, 255, 255, 0.04);
+        --color-text: #f4f4f5;
+        --color-text-muted: #a1a1aa;
+        --color-text-faint: #71717a;
+        --color-accent: #3b82f6;
+        --color-accent-soft: rgba(59, 130, 246, 0.12);
+        --color-border: rgba(255, 255, 255, 0.06);
+        --color-border-strong: rgba(255, 255, 255, 0.1);
+        --color-nav-scrolled-bg: rgba(12, 13, 16, 0.8);
+        --font-display: "Outfit", system-ui, sans-serif;
+        --font-body: "DM Sans", system-ui, sans-serif;
+        --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+        --space-xs: 0.25rem;
+        --space-sm: 0.5rem;
+        --space-md: 1rem;
+        --space-lg: 1.5rem;
+        --space-xl: 2rem;
+        --space-2xl: 3rem;
+        --space-3xl: 4.5rem;
+        --space-4xl: 6rem;
+        --space-section: clamp(4rem, 12vw, 7rem);
+        --radius-sm: 0.375rem;
+        --radius-md: 0.75rem;
+        --radius-pill: 9999px;
+        --content-max: 72rem;
+        --content-narrow: 40rem;
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --transition-fast: 0.25s var(--ease-out);
+        --transition-reveal: 0.6s var(--ease-out);
+        --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 40px rgba(0, 0, 0, 0.35);
+        --shadow-card-hover: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 20px 50px rgba(0, 0, 0, 0.45);
+        --z-cursor: 9999;
+        --z-nav: 100;
+        --z-grain: 50;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-body);
+        font-size: 1.0625rem;
+        line-height: 1.65;
+        color: var(--color-text);
+        background-color: var(--color-bg);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0.5rem;
+        z-index: calc(var(--z-nav) + 1);
+        padding: var(--space-sm) var(--space-md);
+        background: var(--color-accent);
+        color: #fff;
+        font-weight: 600;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+      }
+
+      .skip-link:focus {
+        left: 0.5rem;
+      }
+
+      /* Film grain */
+      .grain {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: var(--z-grain);
+        opacity: 0.04;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+
+      /* Custom cursor */
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+
+      html:has(body.is-pointer-fine),
+      body.is-pointer-fine,
+      body.is-pointer-fine * {
+        cursor: none;
+      }
+
+      body.is-pointer-fine .cursor-dot,
+      body.is-pointer-fine .cursor-ring {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: var(--z-cursor);
+        border-radius: 50%;
+        transform: translate3d(-100px, -100px, 0);
+        will-change: transform;
+      }
+
+      body.is-pointer-fine .cursor-dot {
+        width: 8px;
+        height: 8px;
+        margin: -4px 0 0 -4px;
+        background: var(--color-accent);
+        transform-origin: center center;
+        transition: background 0.2s ease, opacity 0.2s ease;
+      }
+
+      body.is-pointer-fine .cursor-ring {
+        width: 32px;
+        height: 32px;
+        margin: -16px 0 0 -16px;
+        border: 1px solid rgba(244, 244, 245, 0.35);
+        transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+      }
+
+      body.is-pointer-fine.cursor-hover .cursor-dot {
+        background: #fff;
+      }
+
+      body.is-pointer-fine.cursor-hover .cursor-ring {
+        border-color: var(--color-accent);
+        background: rgba(59, 130, 246, 0.08);
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 3px;
+      }
+
+      .container {
+        width: min(100% - var(--space-xl) * 2, var(--content-max));
+        margin-inline: auto;
+      }
+
+      .container--narrow {
+        width: min(100% - var(--space-xl) * 2, var(--content-narrow));
+      }
+
+      /* Nav */
+      .site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: var(--z-nav);
+        transition: background var(--transition-fast), border-color var(--transition-fast),
+          backdrop-filter var(--transition-fast);
+      }
+
+      .site-nav__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-md);
+        padding: var(--space-md) var(--space-xl);
+        max-width: calc(var(--content-max) + 4rem);
+        margin-inline: auto;
+      }
+
+      .site-nav.scrolled {
+        background: var(--color-nav-scrolled-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .logo {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.125rem;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .logo__accent {
+        color: var(--color-accent);
+        font-weight: 800;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--space-lg);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-links a {
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: var(--color-text-muted);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+      }
+
+      .nav-links a:hover {
+        color: var(--color-text);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-sm);
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.9375rem;
+        padding: 0.65rem 1.35rem;
+        border-radius: var(--radius-pill);
+        text-decoration: none;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: transform var(--transition-fast), border-color var(--transition-fast),
+          background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+      }
+
+      .btn--primary {
+        background: var(--color-accent);
+        color: #fff;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      }
+
+      .btn--primary:hover {
+        filter: brightness(1.06);
+        transform: translateY(-1px);
+      }
+
+      .btn--ghost {
+        background: transparent;
+        color: var(--color-text);
+        border-color: var(--color-border-strong);
+      }
+
+      .btn--ghost:hover {
+        border-color: var(--color-accent);
+        color: var(--color-text);
+      }
+
+      .btn--large {
+        padding: 0.85rem 1.75rem;
+        font-size: 1rem;
+      }
+
+      .site-footer {
+        padding: var(--space-2xl) var(--space-xl);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .footer__grid {
+        display: grid;
+        gap: var(--space-xl);
+        max-width: var(--content-max);
+        margin-inline: auto;
+      }
+
+      @media (min-width: 768px) {
+        .footer__grid {
+          grid-template-columns: 1fr auto;
+          align-items: start;
+        }
+      }
+
+      .footer__brand {
+        font-family: var(--font-display);
+        font-weight: 700;
+        margin: 0 0 var(--space-sm);
+      }
+
+      .footer__copy {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--color-text-faint);
+      }
+
+      .footer__nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-md) var(--space-lg);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer__nav a {
+        color: var(--color-text-muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .footer__nav a:hover {
+        color: var(--color-text);
+      }
+
+      .footer__tag {
+        grid-column: 1 / -1;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--color-text-faint);
+        padding-top: var(--space-lg);
+        border-top: 1px solid var(--color-border);
+        margin-top: var(--space-md);
+      }
+
+
+      @media (max-width: 640px) {
+        .site-nav__inner { flex-direction: column; align-items: stretch; padding: var(--space-md); }
+        .nav-links { justify-content: center; gap: var(--space-md); }
+        .nav-links li:last-child { width: 100%; display: flex; justify-content: center; }
+      }
+
+      .article { width: min(100% - var(--space-xl) * 2, 68ch); margin-inline: auto; padding-block: calc(var(--header-h, 3.75rem) + 6rem) 5rem; }
+      .article h1 { font-family: var(--font-display); font-size: clamp(1.9rem, 1.3rem + 2.5vw, 2.9rem); line-height: 1.15; margin: 0 0 var(--space-md); }
+      .article__byline { color: var(--color-text-muted); font-size: 0.95rem; margin: 0 0 var(--space-xl); }
+      .article h2 { font-family: var(--font-display); font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem); line-height: 1.25; margin: var(--space-xl) 0 var(--space-sm); }
+      .article p { line-height: 1.75; margin: 0 0 var(--space-md); }
+      .table-wrap { overflow-x: auto; margin: var(--space-lg) 0; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); }
+      .article table { width: 100%; border-collapse: collapse; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+      .article th, .article td { padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+      .article th { color: var(--color-text-muted); font-weight: 600; background: var(--color-surface-elevated); }
+      .article tbody tr:nth-child(odd) { background: var(--color-surface-row-a); }
+      .article tbody tr:nth-child(even) { background: var(--color-surface-row-b); }
+      .article tbody tr:last-child td { border-bottom: 0; }
+    </style>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-nav" id="site-nav" role="banner">
+      <div class="site-nav__inner">
+        <a class="logo" href="../" aria-label="Left Coast Stack home">
+          Left Coast <span class="logo__accent">Stack</span>
+        </a>
+        <nav aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="../#services">Services</a></li>
+            <li><a href="../#work">Work</a></li>
+            <li><a href="../#about">About</a></li>
+            <li><a href="../#faq">FAQ</a></li>
+            <li><a href="../#contact">Contact</a></li>
+            <li><a class="btn btn--primary" href="mailto:hello@leftcoaststack.com">Start a Project</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <article class="article">
+        <h1>I re-scored 20 documents. 7 crossed the cutoff.</h1>
+        <p class="article__byline">James (JT) McHorse · <time datetime="2026-11-04">November 4, 2026</time></p>
+<p>I re-scored 20 documents my LLM judge had already scored, with the same rubric, and 7 of them landed on the other side of the cutoff. Most of that movement was between the old scores and the new ones. The two fresh passes mostly agreed.</p>
+<h2>What I tested</h2>
+<p>The pipeline pulls tens of thousands of documents from about ten kinds of sources into one table. Three things write the same score field: deterministic rules, a cheap model (z.ai GLM) and Claude. Anything at 65 or above gets a ping.</p>
+<p>I took 20 rows Claude had already scored. The sample ran from 55 to 78, mostly near the cutoff. The stored score and its reason went into a separate file so the re-scoring couldn't see them. Then I had an agent run it: a fresh Claude session scored each row once against the rubric, then a second time by rebuilding the score from the rubric bands without re-reading the first pass.</p>
+<p>A row counted as crossed if the stored score and the two new ones didn't all sit on the same side of 65.</p>
+<h2>What happened</h2>
+<p>7 of 20 crossed. Between the two fresh passes, only 2 rows flipped, and the average gap was 2.45 points. Between the stored scores and the fresh ones, the average gap was 8.2.</p>
+<p>Here are the rows that crossed, plus the biggest miss that didn't. The row numbers are arbitrary IDs from the test report.</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Row</th><th scope="col">Stored</th><th scope="col">Re-score 1</th><th scope="col">Re-score 2</th><th scope="col">Crossed 65?</th></tr></thead>
+<tbody>
+<tr><td>R4</td><td>60</td><td>68</td><td>72</td><td>yes</td></tr>
+<tr><td>R6</td><td>62</td><td>64</td><td>65</td><td>yes</td></tr>
+<tr><td>R9</td><td>64</td><td>30</td><td>25</td><td>no</td></tr>
+<tr><td>R10</td><td>64</td><td>74</td><td>75</td><td>yes</td></tr>
+<tr><td>R12</td><td>65</td><td>68</td><td>64</td><td>yes</td></tr>
+<tr><td>R13</td><td>66</td><td>55</td><td>55</td><td>yes</td></tr>
+<tr><td>R15</td><td>68</td><td>52</td><td>46</td><td>yes</td></tr>
+<tr><td>R17</td><td>69</td><td>25</td><td>25</td><td>yes</td></tr>
+</tbody>
+</table></div>
+<p>R6 and R12 are the two rows where the fresh passes disagreed with each other. The rest is the stored score drifting away from two passes that roughly matched.</p>
+<h2>Limits</h2>
+<p>It's 20 rows and one model, and the sample was picked to sit near the cutoff, so each row is 5 percentage points. Both fresh passes ran in the same session, which probably makes 2.45 a floor on how much two cold runs would disagree. The stored scores came from earlier sessions, some possibly under older rubric text, so the 8.2 mixes scorer drift with rubric drift.</p>
+<h2>Why the stored scores drifted</h2>
+<p>R17 is the clearest case. It was stored at 69 and came back 25 both times, because the re-scores applied a hard cap the original pass hadn't. The stored reason never mentions it. My best guess, which I haven't verified, is that the data behind the cap showed up after the row was scored, and scored rows never get pulled back in. If that's right, it's a sequencing bug more than a wording one.</p>
+<p>R9 never crossed, since all three scores sit under 65, but it moved further than any other row. The rubric had no rule for that kind of document, and the old and new passes filled the gap differently. Part of the drop came from a flag marking the row ineligible, and that flag may have been set after the stored score. Same gap as R17, if so.</p>
+<p>The near-cutoff flips have a duller cause. The rubric's bands were about 20 points wide, a couple of them straddled 65, and nothing said where inside a band a row should land. R6 and R12 flipped on placement alone. One category was marked "high" with no number attached, and R4 and R10 moved about 10 points depending on whether the scorer put them in it.</p>
+<h2>Why judge-vs-itself comes first</h2>
+<p>The 8.2 is still a self-agreement number. Claude wrote the stored scores too, so that gap is the judge disagreeing with itself across sessions and possibly rubric versions, not within one sitting.</p>
+<p>If two passes of the same judge put a row on opposite sides of the cutoff, a person can agree with at most one of them. So the judge's agreement with itself is a ceiling on its agreement with me, and it's cheap to measure, so it goes first.</p>
+<p>Then there's the question of what to grade against. When I went looking for human judgments to grade against, about 1 in 4,000 rows the pipeline had set aside carried a reason a person wrote. The rest came from rules, or from bulk instructions keyed on age or on the score itself. Grading the judge against the score-keyed ones would partly grade it against itself.</p>
+<h2>What's next</h2>
+<p>I've added anchors inside the bands. I haven't re-run the 20 yet, so I don't know if they fixed the placement flips.</p>
+<p>The next step is a blind audit. A 25-row pilot is being prepared now, then about 200 rows across every score band, with the score hidden while I label them.</p>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Left Coast Stack</p>
+          <p class="footer__copy">© <span id="footer-year"></span> Left Coast Stack LLC. All rights reserved.</p>
+        </div>
+        <ul class="footer__nav" aria-label="Footer">
+          <li><a href="../#services">Services</a></li>
+          <li><a href="../#work">Work</a></li>
+          <li><a href="../#about">About</a></li>
+          <li><a href="../#faq">FAQ</a></li>
+          <li><a href="../#contact">Contact</a></li>
+        </ul>
+        <p class="footer__tag">Built with precision in Spokane, WA</p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var nav = document.getElementById("site-nav");
+        function onScroll() { if (nav) nav.classList.toggle("scrolled", window.scrollY > 60); }
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        var y = document.getElementById("footer-year");
+        if (y) y.textContent = String(new Date().getFullYear());
+      })();
+    </script>
+  </body>
+</html>
